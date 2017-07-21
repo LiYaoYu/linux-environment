@@ -1,0 +1,12 @@
+# close startup msg
+startup_message off
+
+# set to UTF-8
+defutf8 on
+
+# detach 
+bindkey -k k9 detach
+
+# change focus partition
+bindkey -k k; focus
+

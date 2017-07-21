@@ -1,0 +1,139 @@
+set nocompatible              " be iMproved, required 
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Plugins, required
+Plugin 'gmarik/vundle'
+
+" plugins
+Plugin 'scrooloose/nerdtree' " Can get the file list without leave vim
+Plugin 'Valloric/YouCompleteMe' " Code completion
+
+" settings for YouCompleteMe                                                     
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+let g:ycm_confirm_extra_conf = 0  
+let g:ycm_extra_conf_vim_data   = ['&filetype']
+let g:ycm_filepath_completion_use_working_dir = 1
+
+" automatically reconizing the file type
+filetype plugin on
+
+" detect the language and turn on the color
+syntax on
+
+" line number
+set nu
+
+" color configuration
+set bg=dark
+hi LineNr cterm=bold ctermfg=DarkGrey 
+hi CursorLineNr cterm=bold ctermfg=Green
+
+" 80 characters reminder
+set cc=80
+highlight ColorColumn ctermbg=236 guibg=#19474b
+
+" remain indent
+set ai
+
+" location remind                                                              
+set cursorline
+
+" initiate mouse
+set mouse=a
+set ttymouse=xterm2
+
+" present result of current searched words
+set incsearch
+set confirm 
+
+" search with ignoring upper and lower case 
+set ic
+
+" tab settings
+set tabstop=4
+set shiftwidth=4
+set expandtab
+
+" do not change lines
+set nowrap
+
+" show the indent
+set list lcs=tab:\|\ 
+hi SpecialKey ctermfg=239 guifg=#654321
+
+" grep pattern
+nmap <F2> :vim //j ** <Left><Left><Left><Left><Left><Left>
+nmap <F3> :cw <Enter>
+nmap <F4> :cdo %s///gc <Left><Left><Left><Left><Left>
+
+" roll the tab
+nmap <F5> <ESC>gT
+nmap <F6> <ESC>gt
+
+" turn on plugin
+nmap <F7> :NERDTree<CR>
+nmap <F8> :SrcExpl<CR>
+
+" easy navigation btw splits 
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" key mapping
+inoremap {<CR> {<CR>}<Esc>ko<Tab>
+
+" for Makefile
+autocmd FileType make setlocal noexpandtab shiftwidth=8 tabstop=8
+
+""""""" cscope settings
+
+set cscopetag " use both cscope and ctag for 'ctrl-]', ':ta', and 'vim -t'
+set csto=0
+
+" add any cscope database in current directory
+if filereadable("cscope.out")
+    cs add cscope.out  
+" else add the database pointed to by environment variable 
+elseif $CSCOPE_DB != ""
+    cs add $CSCOPE_DB
+endif
+
+" show msg when any other cscope db added
+set cscopeverbose  
+
+
+" key mapping for cscope
+"   's'   symbol: find all references to the token under cursor
+"   'g'   global: find global definition(s) of the token under cursor
+"   'c'   calls:  find all calls to the function name under cursor
+"   't'   text:   find all instances of the text under cursor
+"   'e'   egrep:  egrep search for the word under cursor
+"   'f'   file:   open the filename under cursor
+"   'i'   includes: find files that include the filename under cursor
+"   'd'   called: find functions that function under cursor calls
+" You can use CTRL-T to go back to where you were before the search.  
+
+" jump to target directly
+nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+
+" jump to target with a new vertical split window
+nmap <C-\><C-\>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\><C-\>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\><C-\>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\><C-\>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\><C-\>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\><C-\>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
+nmap <C-\><C-\>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+nmap <C-\><C-\>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
