@@ -15,14 +15,17 @@ cp screen/screenrc ~/.screenrc
 ```
 git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 ```
+*** 
 ### Plugin Installation
 Enter vim and input:
 ```
 :PluginInstall
 ```
+*** 
 ### Cscope Setup
 ##### Requirement:
 * cscope
+*** 
 ### YouCompleteMe Setup
 ##### Requirement:
 * cmake
