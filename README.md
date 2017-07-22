@@ -2,6 +2,7 @@
 ##### Includes:
 * vim settings (vimrc)
 * screen settings (screen)
+* zsh settings (includes in one-key-setting.sh)
 
 *** 
 Initialize settings by (if any of them are needed)
