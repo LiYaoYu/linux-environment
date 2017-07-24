@@ -2,13 +2,14 @@
 ##### Includes:
 * vim settings (vimrc)
 * screen settings (screen)
-* zsh settings (included in one-key-setting.sh)
+* zsh settings
 
 *** 
 Initialize settings by (if any of them are needed)
 ```
 cp vim/vimrc ~/.vimrc
 cp screen/screenrc ~/.screenrc
+cp zsh/zshrc ~/.zshrc
 ```
 
 ## Vim Settings
@@ -54,4 +55,17 @@ flags = [
 '-isystem',
 '/usr/include/'
 ]
+```
+
+### Zsh Setup
+##### Requirement:
+* oh-my-zsh
+Install oh-my-zsh 
+```
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+```
+
+Copy oh-my-zsh theme to oh-my-zsh/themes
+```
+cp zsh/mytheme.zsh-theme ~/.oh-my-zsh/themes/
 ```

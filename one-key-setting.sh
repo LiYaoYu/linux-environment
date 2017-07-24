@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 echo setting environment ...
 
@@ -23,3 +23,7 @@ echo compiling YCM with semantic support for C-family languages ...
 
 echo installing oh-my-zsh ...
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
+echo setting oh-my-zsh ...
+cp zsh/zshrc ~/.zshrc
+cp zsh/mytheme.zsh-theme ~/.oh-my-zsh/themes/
