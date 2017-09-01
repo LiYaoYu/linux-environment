@@ -12,7 +12,7 @@ Plugin 'gmarik/vundle'
 Plugin 'scrooloose/nerdtree' " Can get the file list without leave vim
 Plugin 'Valloric/YouCompleteMe' " Code completion
 
-" settings for YouCompleteMe                                                     
+" settings for YouCompleteMe
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 0  
 let g:ycm_extra_conf_vim_data   = ['&filetype']
@@ -24,6 +24,17 @@ filetype plugin on
 " detect the language and turn on the color
 syntax on
 
+" status line
+set statusline=
+set statusline+=%2*\ %<%F\                                "File+path
+set statusline+=%3*\ %=\ %{''.(&fenc!=''?&fenc:&enc).''}\ "Encoding
+set statusline+=%6*\ %5l,%3c\                            "RowColnumber
+set statusline+=%0*\ \ %m%r%w\ %P\ \                      "Modified? Readonly? Top/bot.
+hi User2 ctermfg=15  ctermbg=0
+hi User3 ctermfg=15  ctermbg=0
+hi User6 ctermfg=0  ctermbg=32
+set laststatus=2
+
 " line number
 set nu
 
@@ -33,14 +44,15 @@ hi LineNr cterm=bold ctermfg=DarkGrey
 hi CursorLineNr cterm=bold ctermfg=Green
 
 " 80 characters reminder
-set cc=80
-highlight ColorColumn ctermbg=236 guibg=#19474b
+hi OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9
+match OverLength /\%81v.\+/
 
 " remain indent
 set ai
 
 " location remind                                                              
 set cursorline
+hi CursorLine cterm=none ctermbg=240
 
 " initiate mouse
 set mouse=a
