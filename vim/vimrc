@@ -52,7 +52,7 @@ set ai
 
 " location remind                                                              
 set cursorline
-hi CursorLine cterm=none ctermbg=240
+hi CursorLine cterm=none ctermbg=235
 
 " initiate mouse
 set mouse=a
