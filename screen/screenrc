@@ -10,4 +10,5 @@ bindkey -k k9 detach
 # change focus partition
 bindkey -k k; focus
 
+# set screen color consistent in non-screen
 term screen-256color

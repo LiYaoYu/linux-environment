@@ -113,7 +113,11 @@ def FlagsForFile( filename, **kwargs ):
   flags = [
     '-Wall',
     '-Wextra',
-    '-DUSE_CLANG_COMPLETER',
+    '-Werror',
+    '-Wno-long-long',
+    '-Wno-variadic-macros',
+    '-fexceptions',
+    '-DNDEBUG',
     '-I',
     'include',
     '-isystem',
