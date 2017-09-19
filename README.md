@@ -1,14 +1,14 @@
 # Linux Environment Settings
 ##### Includes:
-* vim settings (vimrc)
-* screen settings (screen)
-* zsh settings
+* vim settings (.vimrc)
+* tmux settings (.tmux.conf)
+* zsh settings (.zshrc)
 
 *** 
 Initialize settings by (if any of them are needed)
 ```
 cp vim/vimrc ~/.vimrc
-cp screen/screenrc ~/.screenrc
+cp tmux/tmux.conf ~/.tmux.conf
 cp zsh/zshrc ~/.zshrc
 ```
 

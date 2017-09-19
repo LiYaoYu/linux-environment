@@ -3,14 +3,14 @@
 install_requirements() {
   sudo apt-get update
   sudo apt-get upgrade
-  sudo apt-get install cscope cmake python-dev python3-dev zsh
+  sudo apt-get install cscope cmake python-dev python3-dev tmux zsh
 }
 
 
 copy_required_files() {
   cp vim/vimrc ~/.vimrc
   cp vim/ycm_extra_conf.py ~/.ycm_extra_conf.py
-  cp screen/screenrc ~/.screenrc
+  cp tmux/tmux.conf ~/.tmux.conf
 }
 
 
