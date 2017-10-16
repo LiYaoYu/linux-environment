@@ -146,8 +146,8 @@ install_ohmyzsh() {
 
 
 replace_rm() {
-    mv /bin/rm bin/rm.bak
-    cp rm.rep /bin/rm
+  mv /bin/rm bin/rm.bak
+  cp rm.rep /bin/rm
 }
 
 
