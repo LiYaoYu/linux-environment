@@ -2,7 +2,6 @@
 
 install_requirements() {
   sudo apt-get update
-  sudo apt-get upgrade
   sudo apt-get install cscope cmake python-dev python3-dev tmux zsh
 }
 
@@ -145,6 +144,13 @@ install_ohmyzsh() {
   env zsh
 }
 
+
+replace_rm() {
+    mv /bin/rm bin/rm.bak
+    cp rm.rep /bin/rm
+}
+
+
 # main
 echo setting environment ...
 
@@ -165,3 +171,6 @@ compile_ycm_essential
 
 echo installing oh-my-zsh ...
 install_ohmyzsh
+
+echo replace rm command ...
+replace_rm
