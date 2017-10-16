@@ -13,6 +13,12 @@ copy_required_files() {
 }
 
 
+replace_rm() {
+  mv /bin/rm bin/rm.bak
+  cp rm.rep /bin/rm
+}
+
+
 install_vundle() {
   git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 }
@@ -145,12 +151,6 @@ install_ohmyzsh() {
 }
 
 
-replace_rm() {
-  mv /bin/rm bin/rm.bak
-  cp rm.rep /bin/rm
-}
-
-
 # main
 echo setting environment ...
 
@@ -159,6 +159,9 @@ install_requirements
 
 echo copying required files to home ...
 copy_required_files
+
+echo replace rm command ...
+replace_rm
 
 echo installing vundle ...
 install_vundle
@@ -171,6 +174,3 @@ compile_ycm_essential
 
 echo installing oh-my-zsh ...
 install_ohmyzsh
-
-echo replace rm command ...
-replace_rm
