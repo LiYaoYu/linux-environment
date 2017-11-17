@@ -45,8 +45,8 @@ hi LineNr cterm=bold ctermfg=DarkGrey
 hi CursorLineNr cterm=bold ctermfg=Green
 
 " 80 characters reminder
-hi OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9
-match OverLength /\%81v.\+/
+hi ColorColumn ctermbg=234 guibg=#002B36
+let &colorcolumn=join(range(81,999),",")
 
 " remain indent
 set ai
@@ -150,3 +150,4 @@ nmap <C-\><C-\>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
 nmap <C-\><C-\>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
 nmap <C-\><C-\>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
 nmap <C-\><C-\>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
+
