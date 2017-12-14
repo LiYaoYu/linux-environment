@@ -1,6 +1,0 @@
-#!/bin/bash
-
-while [ ! -z "$1" ]; do
-    mv "$1" ~/.local/share/Trash/files/ 2> /dev/null
-    shift
-done
