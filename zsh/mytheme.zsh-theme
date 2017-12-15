@@ -1,7 +1,8 @@
 # Identity name.
 function id_name {
+        NAME=`whoami`
         if [[ $STY == "" ]]; then
-                echo "$USER@$HOST"
+                echo "$NAME@$HOST"
         else
                 STR=$STY
                 RANDNUM=${STR%.*}
