@@ -36,6 +36,9 @@ hi User3 ctermfg=15  ctermbg=0
 hi User6 ctermfg=0  ctermbg=32
 set laststatus=2
 
+" set encoding
+set encoding=utf-8
+
 " line number
 set nu
 
