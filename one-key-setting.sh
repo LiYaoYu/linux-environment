@@ -2,7 +2,7 @@
 
 install_requirements() {
   sudo apt-get update
-  sudo apt-get install cscope cmake python-dev python3-dev tmux zsh
+  sudo apt install cscope cmake python-dev python3-dev tmux zsh build-essential
 }
 
 
