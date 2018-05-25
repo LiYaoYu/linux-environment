@@ -106,8 +106,7 @@ inoremap {<CR> {<CR>}<Esc>ko<Tab>
 " for Makefile
 autocmd FileType make setlocal noexpandtab shiftwidth=8 tabstop=8
 
-""""""" cscope settings
-
+" cscope settings
 set cscopetag " use both cscope and ctag for 'ctrl-]', ':ta', and 'vim -t'
 set csto=0
 
@@ -121,7 +120,6 @@ endif
 
 " show msg when any other cscope db added
 set cscopeverbose  
-
 
 " key mapping for cscope
 "   's'   symbol: find all references to the token under cursor
@@ -153,4 +151,3 @@ nmap <C-\><C-\>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
 nmap <C-\><C-\>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
 nmap <C-\><C-\>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
 nmap <C-\><C-\>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
-
