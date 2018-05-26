@@ -34,7 +34,7 @@ compile_ycm_essential() {
 }
 
 
-install_ohmyzsh() {
+install_and_set_ohmyzsh() {
   # "https://git.io/vhqYi" is the shorten URL of oh-my-zsh installation script
   # which allows batch mode and is updated in pull requests #5893, link is as 
   # below:
@@ -43,6 +43,9 @@ install_ohmyzsh() {
     echo "Could not install Oh My Zsh" >/dev/stderr
     exit 1
   }
+
+  ln -fs `pwd`/zsh/zshrc ~/.zshrc
+  ln -fs `pwd`/zsh/mytheme.zsh-theme ~/.oh-my-zsh/themes/mytheme.zsh-theme
 }
 
 
@@ -65,8 +68,11 @@ main () {
   echo compiling YCM with semantic support for C-family languages ...
   compile_ycm_essential
 
-  echo installing oh-my-zsh ...
-  install_ohmyzsh
+  echo installing and setting oh-my-zsh ...
+  install_and_set_ohmyzsh
+
+  echo running oh-my-zsh with settings
+  env zsh
 }
 
 main
