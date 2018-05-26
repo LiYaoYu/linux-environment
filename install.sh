@@ -23,9 +23,6 @@ install_and_set_vim() {
 
 
 install_and_set_ohmyzsh() {
-  ln -fs `pwd`/zsh/zshrc ~/.zshrc
-  ln -fs `pwd`/zsh/mytheme.zsh-theme ~/.oh-my-zsh/themes/mytheme.zsh-theme
-
   # "https://git.io/vhqYi" is the shorten URL of oh-my-zsh installation script
   # which allows batch mode and is updated in pull requests #5893, link is as 
   # below:
@@ -34,12 +31,18 @@ install_and_set_ohmyzsh() {
     echo "Could not install Oh My Zsh" >/dev/stderr
     exit 1
   }
+
+  ln -fs `pwd`/zsh/zshrc ~/.zshrc
+  ln -fs `pwd`/zsh/mytheme.zsh-theme ~/.oh-my-zsh/themes/mytheme.zsh-theme
 }
 
 
 install_and_set_tmux() {
+  rm -rf `pwd`/tmux/tres
   git clone https://github.com/tmux-plugins/tmux-resurrect `pwd`/tmux/tres
-  ln -fs `pwd`/tmux/tmux.conf ~/.tmux.conf
+
+  cp tmux/tmux.conf ~/.tmux.conf
+  echo "run-shell `pwd`/tmux/tres/resurrect.tmux" >> ~/.tmux.conf
 }
 
 main() {
