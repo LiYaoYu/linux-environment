@@ -41,6 +41,7 @@ install_and_set_tmux() {
   rm -rf `pwd`/tmux/tres
   git clone https://github.com/tmux-plugins/tmux-resurrect `pwd`/tmux/tres
 
+  rm -f ~/.tmux.conf
   cp tmux/tmux.conf ~/.tmux.conf
   echo "run-shell `pwd`/tmux/tres/resurrect.tmux" >> ~/.tmux.conf
 }
