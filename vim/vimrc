@@ -92,7 +92,7 @@ nmap <F6> <ESC>gt
 
 " turn on plugin
 nmap <F7> :NERDTree<CR>
-nmap <F8> :SrcExpl<CR>
+nmap <F8> :!make > /dev/null & <Enter> <Enter>
 
 " easy navigation btw splits 
 nnoremap <C-J> <C-W><C-J>
