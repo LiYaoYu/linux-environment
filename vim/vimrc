@@ -106,6 +106,9 @@ inoremap {<CR> {<CR>}<Esc>ko<Tab>
 " for Makefile
 autocmd FileType make setlocal noexpandtab shiftwidth=8 tabstop=8
 
+" for Latex
+autocmd FileType tex setlocal wrap
+
 " cscope settings
 set cscopetag " use both cscope and ctag for 'ctrl-]', ':ta', and 'vim -t'
 set csto=0
