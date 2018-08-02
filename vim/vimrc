@@ -107,6 +107,7 @@ inoremap {<CR> {<CR>}<Esc>ko<Tab>
 autocmd FileType make setlocal noexpandtab shiftwidth=8 tabstop=8
 
 " for Latex
+autocmd BufRead,BufNewFile *.tex set filetype=tex
 autocmd FileType tex setlocal wrap
 
 " cscope settings
