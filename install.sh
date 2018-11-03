@@ -1,14 +1,21 @@
 #!/usr/bin/env bash
 
 install_requirements() {
-  sudo apt-get update
-  sudo apt install cscope cmake python-dev python3-dev tmux zsh build-essential
-}
+  apt-get update
+  apt install cscope cmake python-dev python3-dev tmux zsh \
+              exuberant-ctags build-essential silversearcher-ag
 
-
-replace_rm() {
-  mv /bin/rm bin/rm.bak
-  ln -fs `pwd`/rm/rm.rep /bin/rm
+  # install rg based on ubuntu released version
+  ReleaseVersion=`lsb_release -r -s`
+  Res=$(echo "$ReleaseVersion > 18.04" | bc -l)
+  if [ $Res -eq 1 ]; then
+    apt install ripgrep
+  else
+    # https://git.io/fxRaG is the shorten URL of ripgrep installation deb
+    curl -L https://git.io/fxRaG -o ripgrep_0.10.0_amd64.deb
+    dpkg -i ripgrep_0.10.0_amd64.deb
+    rm ripgrep_0.10.0_amd64.deb
+  fi
 }
 
 
@@ -18,7 +25,7 @@ install_and_set_vim() {
 
   git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
   vim +PluginInstall +qall
-  ~/.vim/bundle/YouCompleteMe/install.sh --clang-completer
+  ~/.vim/bundle/YouCompleteMe/install.py --clang-completer
 }
 
 
@@ -49,9 +56,6 @@ install_and_set_tmux() {
 main() {
   echo installing requirements ...
   install_requirements
-
-  # echo replace rm command ...
-  #replace_rm
 
   echo installing and setting vim ...
   install_and_set_vim

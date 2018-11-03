@@ -1,32 +1,80 @@
-set nocompatible              " be iMproved, required 
-filetype off                  " required
-
-" set the runtime path to include Vundle and initialize
+set nocompatible
+filetype off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
-" let Vundle manage Plugins, required
+
+" plugins manager
 Plugin 'gmarik/vundle'
 
-" plugins
-Plugin 'scrooloose/nerdtree' " Can get the file list without leave vim
-Plugin 'Valloric/YouCompleteMe' " Code completion
+" files exploring
+Plugin 'scrooloose/nerdtree'
 
-" settings for YouCompleteMe
-let g:ycm_autoclose_preview_window_after_completion=1
-let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
-let g:ycm_confirm_extra_conf = 0  
-let g:ycm_python_binary_path = '/usr/bin/python3'
-let g:ycm_extra_conf_vim_data = ['&filetype']
-let g:ycm_filepath_completion_use_working_dir = 1
+" code tracing
+Plugin 'LiYaoYu/SrcExpl'
 
-" automatically reconizing the file type
-filetype plugin on
+" code autocompletion
+Plugin 'Valloric/YouCompleteMe'
+
+" files/codes fuzzy exploring
+Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plugin 'junegunn/fzf.vim'
+
 
 " detect the language and turn on the color
 syntax on
 
-" status line
+" change the comfirmation color
+set bg=dark
+
+" line number
+set nu
+
+" enable line number with colors
+hi LineNr cterm=bold ctermfg=DarkGrey
+hi CursorLineNr cterm=bold ctermfg=Green
+
+" set 80 characters reminder
+let &colorcolumn=join(range(81,999),",")
+hi ColorColumn ctermbg=234 guibg=#002B36
+
+" highlight current cursor line
+set cursorline
+hi CursorLine cterm=none ctermbg=235
+
+" show tab indent and trail space with colors
+set list lcs=tab:\|\ ,trail:·
+hi SpecialKey ctermfg=239 guifg=#654321
+
+" set encoding
+set encoding=utf-8
+
+" remain indent
+set ai
+
+" need confirmation before exit
+set confirm
+
+" do not change lines
+set nowrap
+
+" jump to current searching string with case insensitive and immediately
+set ic
+set incsearch
+
+" enable mouse in vim
+set mouse=a
+set ttymouse=xterm2
+
+" settings for tabs
+set expandtab
+set tabstop=4
+set shiftwidth=4
+
+" tab settings for Makefile
+autocmd FileType make setlocal noexpandtab shiftwidth=8 tabstop=8
+
+" settings for status line
 set statusline=
 set statusline+=%2*\ %<%F\                                " File+path
 set statusline+=%3*\ %=\ %{''.(&fenc!=''?&fenc:&enc).''}\ " Encoding
@@ -37,96 +85,50 @@ hi User3 ctermfg=15  ctermbg=237
 hi User6 ctermfg=0  ctermbg=32
 set laststatus=2
 
-" set encoding
-set encoding=utf-8
 
-" line number
-set nu
+" brackets complement
+imap {<CR> {<CR>}<Esc>ko<Tab>
 
-" color configuration
-set bg=dark
-hi LineNr cterm=bold ctermfg=DarkGrey 
-hi CursorLineNr cterm=bold ctermfg=Green
+" resize windows
+nmap , <C-W><
+nmap . <C-W>>
 
-" 80 characters reminder
-hi ColorColumn ctermbg=234 guibg=#002B36
-let &colorcolumn=join(range(81,999),",")
+" shortcuts for navigation between splited windows
+nmap <C-J> <C-W><C-J>
+nmap <C-K> <C-W><C-K>
+nmap <C-L> <C-W><C-L>
+nmap <C-H> <C-W><C-H>
 
-" remain indent
-set ai
+" vertical split current file
+nmap <F2> :vsplit %:p<CR>
 
-" location remind                                                              
-set cursorline
-hi CursorLine cterm=none ctermbg=235
-
-" initiate mouse
-set mouse=a
-set ttymouse=xterm2
-
-" present result of current searched words
-set incsearch
-set confirm 
-
-" search with ignoring upper and lower case 
-set ic
-
-" tab settings
-set tabstop=4
-set shiftwidth=4
-set expandtab
-
-" do not change lines
-set nowrap
-
-" show the indent
-set list lcs=tab:\|\ 
-hi SpecialKey ctermfg=239 guifg=#654321
-
-" grep pattern
-nmap <F2> :vim //j ** <Left><Left><Left><Left><Left><Left>
-nmap <F3> :cw <Enter>
+" search and replace words
+nmap <F3> "zyiw:exe " Ag ".@z.""<CR>
 nmap <F4> :cdo %s///gc <Left><Left><Left><Left><Left>
 
-" roll the tab
-nmap <F5> <ESC>gT
-nmap <F6> <ESC>gt
-
-" turn on plugin
+" plugin shortcut commands
+nmap <F5> :Rg 
+nmap <F6> :Files<CR>
 nmap <F7> :NERDTree<CR>
-nmap <F8> :!make > /dev/null & <Enter> <Enter>
+nmap <F8> :SrcExpl<CR><CR>
 
-" easy navigation btw splits 
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-
-" key mapping
-inoremap {<CR> {<CR>}<Esc>ko<Tab>
-
-" for Makefile
-autocmd FileType make setlocal noexpandtab shiftwidth=8 tabstop=8
-
-" for Latex
-autocmd BufRead,BufNewFile *.tex set filetype=tex
-autocmd FileType tex setlocal wrap
+" roll the tab
+nmap <F9> gT
+nmap <F10> gt
 
 " cscope settings
-set cscopetag " use both cscope and ctag for 'ctrl-]', ':ta', and 'vim -t'
+set cscopetag
 set csto=0
 
-" add any cscope database in current directory
 if filereadable("cscope.out")
     cs add cscope.out  
-" else add the database pointed to by environment variable 
 elseif $CSCOPE_DB != ""
     cs add $CSCOPE_DB
 endif
 
 " show msg when any other cscope db added
-set cscopeverbose  
+set cscopeverbose
 
-" key mapping for cscope
 "   's'   symbol: find all references to the token under cursor
 "   'g'   global: find global definition(s) of the token under cursor
 "   'c'   calls:  find all calls to the function name under cursor
@@ -135,7 +137,6 @@ set cscopeverbose
 "   'f'   file:   open the filename under cursor
 "   'i'   includes: find files that include the filename under cursor
 "   'd'   called: find functions that function under cursor calls
-" You can use CTRL-T to go back to where you were before the search.  
 
 " jump to target directly
 nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
@@ -156,3 +157,44 @@ nmap <C-\><C-\>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
 nmap <C-\><C-\>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
 nmap <C-\><C-\>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
 nmap <C-\><C-\>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
+
+" load specific plugins based on filetype
+filetype plugin on
+
+" settings for fzf
+let g:fzf_layout = { 'down': '~20%' }
+let g:fzf_action = { 'ctrl-v': 'vsplit' }
+
+" settings for YouCompleteMe
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_python_binary_path = '/usr/bin/python3'
+let g:ycm_extra_conf_vim_data = ['&filetype']
+let g:ycm_filepath_completion_use_working_dir = 1
+let g:ycm_show_diagnostics_ui = 0
+let g:ycm_autoclose_preview_window_after_completion = 1
+
+
+" show current function name
+fun! ShowFuncName()
+  let lnum = line(".")
+  let col = col(".")
+  echohl ModeMsg
+  echo getline(search("^[^ \t#/]\\{2}.*[^:]\s*$", 'bW'))
+  echohl None
+  call search("\\%" . lnum . "l" . "\\%" . col . "c")
+endfun
+nmap f :call ShowFuncName() <CR>
+
+" update cscope automatically
+fun! AutoUpdateCscopeAndCtags()
+  let UpdateCscopeDB = 'cscope -Rb'
+  let UpdateCtagsDB = 'ctags -R'
+  let Res = system(UpdateCscopeDB)
+  let Res = system(UpdateCtagsDB)
+  unlet UpdateCscopeDB
+  unlet UpdateCtagsDB
+  unlet Res
+  exe "cs reset"
+endfun
+nmap <C-\>u :call AutoUpdateCscopeAndCtags()<CR><CR>
