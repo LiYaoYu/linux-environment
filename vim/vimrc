@@ -67,9 +67,10 @@ set mouse=a
 set ttymouse=xterm2
 
 " settings for tabs
-set expandtab
 set tabstop=4
+set softtabstop=4
 set shiftwidth=4
+set expandtab
 
 " tab settings for Makefile
 autocmd FileType make setlocal noexpandtab shiftwidth=8 tabstop=8
@@ -89,6 +90,10 @@ set laststatus=2
 " brackets complement
 imap {<CR> {<CR>}<Esc>ko<Tab>
 
+" jump between Rg and pre Rg locations
+nmap b 'X
+nmap B 'Y
+
 " resize windows
 nmap , <C-W><
 nmap . <C-W>>
@@ -106,8 +111,16 @@ nmap <F2> :vsplit %:p<CR>
 nmap <F3> "zyiw:exe " Ag ".@z.""<CR>
 nmap <F4> :cdo %s///gc <Left><Left><Left><Left><Left>
 
+fun! RgExtension()
+  let target = input(":Rg ")
+
+  exec "normal mX"
+  exec "Rg ". target
+  exec "normal mY"
+endfun
+
 " plugin shortcut commands
-nmap <F5> :Rg 
+nmap <F5> <Esc>:call RgExtension()<CR>
 nmap <F6> :Files<CR>
 nmap <F7> :NERDTree<CR>
 nmap <F8> :SrcExpl<CR><CR>
@@ -121,7 +134,7 @@ set cscopetag
 set csto=0
 
 if filereadable("cscope.out")
-    cs add cscope.out  
+    cs add cscope.out
 elseif $CSCOPE_DB != ""
     cs add $CSCOPE_DB
 endif
@@ -184,7 +197,7 @@ fun! ShowFuncName()
   echohl None
   call search("\\%" . lnum . "l" . "\\%" . col . "c")
 endfun
-nmap f :call ShowFuncName() <CR>
+nmap f :call ShowFuncName()<CR>
 
 " update cscope automatically
 fun! AutoUpdateCscopeAndCtags()
