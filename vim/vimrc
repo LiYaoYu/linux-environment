@@ -41,7 +41,6 @@ hi ColorColumn ctermbg=234 guibg=#002B36
 " highlight current cursor line
 set cursorline
 hi CursorLine cterm=none ctermbg=235
-
 " show tab indent and trail space with colors
 set list lcs=tab:\|\ ,trail:·
 hi SpecialKey ctermfg=239 guifg=#654321
@@ -94,6 +93,9 @@ imap {<CR> {<CR>}<Esc>ko<Tab>
 nmap b 'X
 nmap B 'Y
 
+" show current function name
+nmap f :call ShowFuncName()<CR>
+
 " resize windows
 nmap , <C-W><
 nmap . <C-W>>
@@ -111,14 +113,6 @@ nmap <F2> :vsplit %:p<CR>
 nmap <F3> "zyiw:exe " Ag ".@z.""<CR>
 nmap <F4> :cdo %s///gc <Left><Left><Left><Left><Left>
 
-fun! RgExtension()
-  let target = input(":Rg ")
-
-  exec "normal mX"
-  exec "Rg ". target
-  exec "normal mY"
-endfun
-
 " plugin shortcut commands
 nmap <F5> <Esc>:call RgExtension()<CR>
 nmap <F6> :Files<CR>
@@ -132,11 +126,8 @@ nmap <F10> gt
 " cscope settings
 set cscopetag
 set csto=0
-
 if filereadable("cscope.out")
-    cs add cscope.out
-elseif $CSCOPE_DB != ""
-    cs add $CSCOPE_DB
+  cs add cscope.out
 endif
 
 " show msg when any other cscope db added
@@ -171,6 +162,9 @@ nmap <C-\><C-\>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
 nmap <C-\><C-\>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
 nmap <C-\><C-\>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
 
+" update cscope automatically
+nmap <silent> <C-\>u :call AutoUpdateCscopeAndCtags()<CR>
+
 " load specific plugins based on filetype
 filetype plugin on
 
@@ -187,8 +181,15 @@ let g:ycm_filepath_completion_use_working_dir = 1
 let g:ycm_show_diagnostics_ui = 0
 let g:ycm_autoclose_preview_window_after_completion = 1
 
+" function definitions for calls above
+fun! RgExtension()
+  let target = input(":Rg ")
 
-" show current function name
+  exec "normal mX"
+  exec "Rg ". target
+  exec "normal mY"
+endfun
+
 fun! ShowFuncName()
   let lnum = line(".")
   let col = col(".")
@@ -197,9 +198,7 @@ fun! ShowFuncName()
   echohl None
   call search("\\%" . lnum . "l" . "\\%" . col . "c")
 endfun
-nmap f :call ShowFuncName()<CR>
 
-" update cscope automatically
 fun! AutoUpdateCscopeAndCtags()
   let UpdateCscopeDB = 'cscope -Rb'
   let UpdateCtagsDB = 'ctags -R'
@@ -208,6 +207,6 @@ fun! AutoUpdateCscopeAndCtags()
   unlet UpdateCscopeDB
   unlet UpdateCtagsDB
   unlet Res
-  exe "cs reset"
+  silent exec "cs kill -1"
+  silent exec "cs add cscope.out"
 endfun
-nmap <C-\>u :call AutoUpdateCscopeAndCtags()<CR><CR>
