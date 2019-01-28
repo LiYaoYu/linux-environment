@@ -34,8 +34,8 @@ set nu
 hi LineNr cterm=bold ctermfg=DarkGrey
 hi CursorLineNr cterm=bold ctermfg=Green
 
-" set 80 characters reminder
-let &colorcolumn=join(range(81,999),",")
+" set 100 characters reminder
+let &colorcolumn=join(range(101,999),",")
 hi ColorColumn ctermbg=234 guibg=#002B36
 
 " highlight current cursor line
