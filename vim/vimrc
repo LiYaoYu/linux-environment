@@ -10,9 +10,6 @@ Plugin 'gmarik/vundle'
 " files exploring
 Plugin 'scrooloose/nerdtree'
 
-" code tracing
-Plugin 'LiYaoYu/SrcExpl'
-
 " code autocompletion
 Plugin 'Valloric/YouCompleteMe'
 
@@ -117,7 +114,6 @@ nmap <F4> :cdo %s///gc <Left><Left><Left><Left><Left>
 nmap <F5> <Esc>:call RgExtension()<CR>
 nmap <F6> :Files<CR>
 nmap <F7> :NERDTree<CR>
-nmap <F8> :SrcExpl<CR><CR>
 
 " roll the tab
 nmap <F9> gT
@@ -201,11 +197,8 @@ endfun
 
 fun! AutoUpdateCscopeAndCtags()
   let UpdateCscopeDB = 'cscope -Rb'
-  let UpdateCtagsDB = 'ctags -R'
   let Res = system(UpdateCscopeDB)
-  let Res = system(UpdateCtagsDB)
   unlet UpdateCscopeDB
-  unlet UpdateCtagsDB
   unlet Res
   silent exec "cs kill -1"
   silent exec "cs add cscope.out"
