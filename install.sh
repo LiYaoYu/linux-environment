@@ -1,19 +1,26 @@
 #!/usr/bin/env bash
 
-install_requirements() {
-    sudo apt-get update
-    sudo apt install cscope cmake python-dev python3-dev tmux zsh build-essential silversearcher-ag
+get_package_management_system() {
+    . /etc/os-release
+    DISTRIBUTION=$ID
 
-    # install rg based on ubuntu released version
-    ReleaseVersion=`lsb_release -r -s`
-    Res=$(echo "$ReleaseVersion > 18.04" | bc -l)
-    if [ $Res -eq 1 ]; then
-        apt install ripgrep
+    if [ "$DISTRIBUTION" = "elementary" ]; then
+        PKG_INSTALL="apt install"
+        PKG_DB_UPDATE="apt update"
     else
-        # https://git.io/fxRaG is the shorten URL of ripgrep installation deb
-        curl -L https://git.io/fxRaG -o ripgrep_0.10.0_amd64.deb
-        dpkg -i ripgrep_0.10.0_amd64.deb
-        rm ripgrep_0.10.0_amd64.deb
+        PKG_INSTALL="pacman -S"
+        PKG_DB_UPDATE="pacman -Syy"
+    fi
+}
+
+install_requirements() {
+    sudo $PKG_DB_UPDATE
+    sudo $PKG_INSTALL cscope cmake tmux zsh ripgrep
+
+    if [ "$DISTRIBUTION" = "elementary" ]; then
+        sudo $PKG_INSTALL python-dev python3-dev build-essential silversearcher-ag
+    else
+        sudo $PKG_INSTALL python2 python base-devel the_silver_searcher
     fi
 }
 
@@ -50,6 +57,9 @@ install_and_set_tmux() {
 
 
 main() {
+    echo get package management system ...
+    get_package_management_system
+
     echo installing requirements ...
     install_requirements
 
@@ -62,6 +72,5 @@ main() {
     echo installing and setting tmux ...
     install_and_set_tmux
 }
-
 
 main
