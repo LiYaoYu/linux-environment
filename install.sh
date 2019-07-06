@@ -18,7 +18,7 @@ install_requirements() {
     sudo $PKG_INSTALL cscope cmake tmux zsh ripgrep
 
     if [ "$DISTRIBUTION" = "elementary" ]; then
-        sudo $PKG_INSTALL python-dev python3-dev build-essential silversearcher-ag
+        sudo $PKG_INSTALL python-dev python3-dev build-essential silversearcher-ag python3-pip
     else
         sudo $PKG_INSTALL python2 python base-devel the_silver_searcher
     fi
@@ -56,6 +56,12 @@ install_and_set_tmux() {
 }
 
 
+install_python3_pkg() {
+    pip3 install PyDrive
+    pip3 install schedule
+}
+
+
 main() {
     echo get package management system ...
     get_package_management_system
@@ -71,6 +77,9 @@ main() {
 
     echo installing and setting tmux ...
     install_and_set_tmux
+
+    echo installing python3 packages ...
+    install_python3_pkg
 }
 
 main
