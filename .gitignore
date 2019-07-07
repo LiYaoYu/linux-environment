@@ -1,2 +1,5 @@
 *.*.swp
 tmux/tres/
+__pycache__
+credentials.json
+settings.yaml
