@@ -66,7 +66,7 @@ class Google_Drive_Auto_Synchronizer():
     def get_local_file_mdate(self, local_folder, filename):
         local_file_path = local_folder + filename
         local_file_mdate = int(os.path.getmtime(local_file_path))
-        return  os.path.getmtime(local_file_path)
+        return  int(os.path.getmtime(local_file_path))
 
 
     def get_remote_file_mdate(self, remote_folder, filename):
@@ -138,9 +138,11 @@ class Google_Drive_Auto_Synchronizer():
     def sync_both_exists_files(self, local_folder, remote_folder, both_exists_list):
         for filename in both_exists_list:
             local_file_mdate = self.get_local_file_mdate(local_folder, filename)
-            remote_file_mdate = self.get_remote_file_mdate(remote_folder, filename)
 
-            if abs(local_file_mdate - remote_file_mdate) < 20:
+            # Align USA time to TW time (8 hours)
+            remote_file_mdate = self.get_remote_file_mdate(remote_folder, filename) + 28800
+
+            if abs(local_file_mdate - remote_file_mdate) < 60:
                 continue
             elif local_file_mdate > remote_file_mdate:
                 self.upload_local_files(local_folder, remote_folder, filename)
