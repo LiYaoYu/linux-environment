@@ -39,7 +39,7 @@ class Google_Drive_Auto_Synchronizer():
     def _list_gdrive_files(self, remote_folder):
         folder_query_info = {'q': '"%s" in parents and trashed = false' % remote_folder}
         file_list = self.drive.ListFile(folder_query_info).GetList()
-        return [f['title'] for f in file_list]
+        return [f['title'] for f in file_list if f['mimeType'] != 'application/vnd.google-apps.folder']
 
 
     def _list_local_files(self, folder):
