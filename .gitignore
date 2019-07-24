@@ -1,5 +1,6 @@
 *.*.swp
 tmux/tres/
 __pycache__
-credentials.json
 settings.yaml
+client_secrets.json
+credentials.json
