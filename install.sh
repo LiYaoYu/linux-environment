@@ -4,7 +4,7 @@ get_package_management_system() {
     . /etc/os-release
     DISTRIBUTION=$ID
 
-    if [ "$DISTRIBUTION" = "elementary" ]; then
+    if [ "$DISTRIBUTION" = "elementary" ] || [ "$DISTRIBUTION" = "ubuntu" ]; then
         PKG_INSTALL="apt install"
         PKG_DB_UPDATE="apt update"
     else
@@ -56,9 +56,8 @@ install_and_set_tmux() {
 }
 
 
-install_python3_pkg() {
-    pip3 install PyDrive
-    pip3 install schedule
+install_and_set_git() {
+    ln -fs `pwd`/git/gitconfig ~/.gitconfig
 }
 
 
@@ -78,8 +77,8 @@ main() {
     echo installing and setting tmux ...
     install_and_set_tmux
 
-    echo installing python3 packages ...
-    install_python3_pkg
+    echo installing and setting gitconfig ...
+    install_and_set_git
 }
 
 main

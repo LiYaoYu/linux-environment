@@ -1,0 +1,15 @@
+[user]
+	email = yaoyuli1993@gmail.com
+	name = Yao-Yu Li
+[push]
+	default = simple
+[core]
+	editor = vim
+[alias]
+	st = status
+	ci = commit
+	co = checkout
+	br = branch
+	lg = log --decorate --all
+	ld = log --graph --decorate --all
+	lt = log --graph --oneline --decorate --all
