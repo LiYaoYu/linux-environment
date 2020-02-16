@@ -7,7 +7,7 @@ get_package_management_system() {
     if [ "$DISTRIBUTION" = "elementary" ] || [ "$DISTRIBUTION" = "ubuntu" ]; then
         PKG_INSTALL="apt install"
         PKG_DB_UPDATE="apt update"
-    else
+    else # including arch & manjaro
         PKG_INSTALL="pacman -S"
         PKG_DB_UPDATE="pacman -Syy"
     fi
@@ -15,7 +15,7 @@ get_package_management_system() {
 
 install_requirements() {
     sudo $PKG_DB_UPDATE
-    sudo $PKG_INSTALL cscope cmake tmux zsh ripgrep
+    sudo $PKG_INSTALL cscope cmake tmux zsh ripgrep guake
 
     if [ "$DISTRIBUTION" = "elementary" ]; then
         sudo $PKG_INSTALL python-dev python3-dev build-essential silversearcher-ag python3-pip
