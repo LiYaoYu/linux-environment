@@ -20,7 +20,7 @@ install_requirements() {
     if [ "$DISTRIBUTION" = "elementary" ]; then
         sudo $PKG_INSTALL python-dev python3-dev build-essential silversearcher-ag python3-pip
     else
-        sudo $PKG_INSTALL python2 python base-devel the_silver_searcher python-pip
+        sudo $PKG_INSTALL python2 python base-devel the_silver_searcher python-pip gcin
     fi
 }
 
@@ -62,7 +62,7 @@ install_and_set_git() {
 
 
 main() {
-    echo get package management system ...
+    echo getting package management system ...
     get_package_management_system
 
     echo installing requirements ...
