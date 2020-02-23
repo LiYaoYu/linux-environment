@@ -24,20 +24,23 @@ syntax on
 " change the comfirmation color
 set bg=dark
 
+" set background color
+hi Normal ctermbg=233
+
 " line number
 set nu
 
 " enable line number with colors
-hi LineNr cterm=bold ctermfg=DarkGrey
+hi LineNr cterm=bold ctermfg=DarkGrey ctermbg=232
 hi CursorLineNr cterm=bold ctermfg=Green
 
-" set 100 characters reminder
-let &colorcolumn=join(range(101,999),",")
-hi ColorColumn ctermbg=234 guibg=#002B36
+" set 110 characters reminder
+let &colorcolumn=join(range(111,999),",")
+hi ColorColumn ctermbg=232 guibg=#002B36
 
 " highlight current cursor line
 set cursorline
-hi CursorLine cterm=none ctermbg=235
+hi CursorLine cterm=none ctermbg=234
 " show tab indent and trail space with colors
 set list lcs=tab:\|\ ,trail:·
 hi SpecialKey ctermfg=239 guifg=#654321
