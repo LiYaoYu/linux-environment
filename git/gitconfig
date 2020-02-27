@@ -10,6 +10,12 @@
 	ci = commit
 	co = checkout
 	br = branch
-	lg = log --decorate --all
-	ld = log --graph --decorate --all
+	lg = log --decorate
 	lt = log --graph --oneline --decorate --all
+	ltd = log --graph --decorate --all
+	d = difftool
+	mt = mergetool
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
