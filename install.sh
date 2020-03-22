@@ -17,9 +17,9 @@ install_requirements() {
     sudo $PKG_DB_UPDATE
     sudo $PKG_INSTALL cscope cmake tmux zsh ripgrep guake
 
-    if [ "$DISTRIBUTION" = "elementary" ]; then
-        sudo $PKG_INSTALL python-dev python3-dev build-essential silversearcher-ag python3-pip
-    else
+    if [ "$DISTRIBUTION" = "elementary" ] || [ "$DISTRIBUTION" = "ubuntu" ]; then
+        sudo $PKG_INSTALL python-dev python3-dev build-essential silversearcher-ag python3-pip csvtool
+    else # including arch & manjaro
         sudo $PKG_INSTALL python2 python base-devel the_silver_searcher python-pip gcin
     fi
 }
@@ -61,6 +61,14 @@ install_and_set_git() {
 }
 
 
+install_daily_tools() {
+    if [ "$DISTRIBUTION" = "elementary" ] || [ "$DISTRIBUTION" = "ubuntu" ]; then
+    else # including arch & manjaro
+        aurman -S tabview-git
+    fi
+}
+
+
 main() {
     echo getting package management system ...
     get_package_management_system
@@ -79,6 +87,9 @@ main() {
 
     echo installing and setting gitconfig ...
     install_and_set_git
+
+    echo installing daily tools
+    install_daily_tools
 }
 
 main
