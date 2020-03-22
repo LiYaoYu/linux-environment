@@ -63,6 +63,7 @@ install_and_set_git() {
 
 install_daily_tools() {
     if [ "$DISTRIBUTION" = "elementary" ] || [ "$DISTRIBUTION" = "ubuntu" ]; then
+        echo no daily tools required to be installed yet
     else # including arch & manjaro
         aurman -S tabview-git
     fi
