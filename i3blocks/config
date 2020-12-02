@@ -1,0 +1,26 @@
+[network]
+label=  
+command=/home/yaoyu/.config/i3blocks/network.sh
+interval=5
+color=#3CAEA3
+
+[volume]
+label= ♪ 
+command=/home/yaoyu/.config/i3blocks/volume.sh
+interval=once
+signal=10
+
+[cpu]
+label=   
+command=/home/yaoyu/.config/i3blocks/cpu.sh
+interval=5
+
+[battery]
+label=  
+command=/home/yaoyu/.config/i3blocks/battery.sh
+interval=5
+
+[time]
+label=  
+command=date +"%H:%M %a %Y-%m-%d"
+interval=60
