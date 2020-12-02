@@ -20,7 +20,7 @@ install_requirements() {
     if [ "$DISTRIBUTION" = "elementary" ] || [ "$DISTRIBUTION" = "ubuntu" ]; then
         sudo $PKG_INSTALL python-dev python3-dev build-essential silversearcher-ag python3-pip csvtool
     else # including arch & manjaro
-        sudo $PKG_INSTALL python2 python base-devel the_silver_searcher python-pip gcin
+        sudo $PKG_INSTALL python base-devel the_silver_searcher python-pip gcin
     fi
 }
 
@@ -65,7 +65,7 @@ install_daily_tools() {
     if [ "$DISTRIBUTION" = "elementary" ] || [ "$DISTRIBUTION" = "ubuntu" ]; then
         echo no daily tools required to be installed yet
     else # including arch & manjaro
-        aurman -S tabview-git
+        yay -S tabview
     fi
 }
 
