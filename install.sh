@@ -32,6 +32,7 @@ install_and_set_vim() {
     git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
     vim +PluginInstall +qall
     ~/.vim/bundle/YouCompleteMe/install.py --clang-completer
+    ~/.vim/bundle/YouCompleteMe/install.py --go-completer
 }
 
 
