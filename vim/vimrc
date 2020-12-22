@@ -1,6 +1,7 @@
 set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/vundle/
+set rtp+=$GOPATH/src/golang.org/x/lint/misc/vim
 call vundle#rc()
 
 
@@ -16,6 +17,9 @@ Plugin 'Valloric/YouCompleteMe'
 " files/codes fuzzy exploring
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'junegunn/fzf.vim'
+
+" golang environment
+Plugin 'fatih/vim-go'
 
 
 " detect the language and turn on the color
