@@ -33,6 +33,9 @@ install_and_set_vim() {
     vim +PluginInstall +qall
     ~/.vim/bundle/YouCompleteMe/install.py --clang-completer
     ~/.vim/bundle/YouCompleteMe/install.py --go-completer
+
+    go get -u golang.org/x/lint/golint
+    sudo ln -sf $(go list -f {{.Target}} golang.org/x/lint/golint) /bin/golint
 }
 
 
