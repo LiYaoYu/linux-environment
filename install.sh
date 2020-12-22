@@ -18,7 +18,7 @@ install_requirements() {
     sudo $PKG_INSTALL cscope cmake tmux zsh ripgrep guake
 
     if [ "$DISTRIBUTION" = "elementary" ] || [ "$DISTRIBUTION" = "ubuntu" ]; then
-        sudo $PKG_INSTALL python-dev python3-dev build-essential silversearcher-ag python3-pip csvtool
+        sudo $PKG_INSTALL python-dev python3-dev build-essential silversearcher-ag python3-pip csvtool golang
     else # including arch & manjaro
         sudo $PKG_INSTALL python base-devel the_silver_searcher python-pip gcin
     fi
