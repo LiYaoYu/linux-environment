@@ -33,9 +33,6 @@ install_and_set_vim() {
     vim +PluginInstall +qall
     ~/.vim/bundle/YouCompleteMe/install.py --clang-completer
     ~/.vim/bundle/YouCompleteMe/install.py --go-completer
-
-    go get -u golang.org/x/lint/golint
-    sudo ln -sf $(go list -f {{.Target}} golang.org/x/lint/golint) /bin/golint
 }
 
 
@@ -67,7 +64,8 @@ install_and_set_git() {
 
 install_daily_tools() {
     if [ "$DISTRIBUTION" = "elementary" ] || [ "$DISTRIBUTION" = "ubuntu" ]; then
-        echo no daily tools required to be installed yet
+        go get -u golang.org/x/lint/golint
+        sudo ln -sf $(go list -f {{.Target}} golang.org/x/lint/golint) /bin/golint
     else # including arch & manjaro
         yay -S tabview
     fi
