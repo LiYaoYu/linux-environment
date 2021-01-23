@@ -1,42 +1,131 @@
 #!/usr/bin/env bash
 
-get_package_management_system() {
-    . /etc/os-release
-    DISTRIBUTION=$ID
+show_help() {
+    echo "Usage: install.sh [OPTION] ..."
+    echo "This script setup the environment for daily usage, there are several"
+    echo "options can be configured as below:"
+    echo "  -h    show this help description"
+    echo "  -c    setup the environment to support C/C++ development"
+    echo "  -p    setup the environment to support python development"
+    echo "  -g    setup the environment to support golang development"
+    echo "  -w    setup the environment includes the tools for windows manager"
+    echo "  -k    setup the environment for kubernetes deployment"
+    echo "  -m    setup the mosh server"
+    exit 0
+}
 
+get_cli_arg() {
+    . /etc/os-release
+
+    DISTRIBUTION=$ID
+    C_DEV_SUPPORT=false
+    P_DEV_SUPPORT=false
+    G_DEV_SUPPORT=false
+    WM_SUPPORT=false
+    K8S_SUPPORT=false
+    MOSH_SUPPORT=false
+
+    for i in "$@"; do
+        case $1 in
+            -h) show_help ;;
+            -c) C_DEV_SUPPORT=true ;;
+            -p) P_DEV_SUPPORT=true ;;
+            -g) G_DEV_SUPPORT=true ;;
+            -w) WM_SUPPORT=true ;;
+            -k) K8S_SUPPORT=true ;;
+            -m) MOSH_SUPPORT=true ;;
+        esac
+        shift
+    done
+
+    echo "DISTRIBUTION  = ${DISTRIBUTION}"
+    echo "C_DEV_SUPPORT = ${C_DEV_SUPPORT}"
+    echo "P_DEV_SUPPORT = ${P_DEV_SUPPORT}"
+    echo "G_DEV_SUPPORT = ${G_DEV_SUPPORT}"
+    echo "WM_SUPPORT    = ${WM_SUPPORT}   "
+    echo "K8S_SUPPORT   = ${K8S_SUPPORT}  "
+    echo "MOSH_SUPPORT  = ${MOSH_SUPPORT}  "
+}
+
+init_variables() {
     if [ "$DISTRIBUTION" = "elementary" ] || [ "$DISTRIBUTION" = "ubuntu" ]; then
         PKG_INSTALL="apt install"
         PKG_DB_UPDATE="apt update"
-    else # including arch & manjaro
+    elif [ "$DISTRIBUTION" = "arch" ] || [ "$DISTRIBUTION" = "manjaro" ]; then
         PKG_INSTALL="pacman -S"
         PKG_DB_UPDATE="pacman -Syy"
+    else
+        echo "Unsupported linux distribution found (${DISTRIBUTION})"
+        exit 1
+    fi
+
+    if [ "$G_DEV_SUPPORT" = "true" ]; then
+        export GOPATH=~/.golang
     fi
 }
 
-install_requirements() {
-    sudo $PKG_DB_UPDATE
-    sudo $PKG_INSTALL cscope cmake tmux zsh ripgrep guake
+install_requirements_from_package_management_system() {
+    REQUIREMENTS="tmux zsh ripgrep"
 
     if [ "$DISTRIBUTION" = "elementary" ] || [ "$DISTRIBUTION" = "ubuntu" ]; then
-        sudo $PKG_INSTALL python-dev python3-dev build-essential silversearcher-ag python3-pip csvtool golang
+        PYTHON="python3-dev python3-pip"
+        GOLANG="golang"
+        REQUIREMENTS="${REQUIREMENTS} build-essential csvtool silversearcher-ag"
     else # including arch & manjaro
-        sudo $PKG_INSTALL python base-devel the_silver_searcher python-pip gcin
+        PYTHON="python python-pip"
+        GOLANG="go"
+        REQUIREMENTS="${REQUIREMENTS} base-devel the_silver_searcher"
+    fi
+
+    if [ "$C_DEV_SUPPORT" = "true" ]; then
+        REQUIREMENTS="${REQUIREMENTS} cscope cmake"
+    fi
+
+    if [ "$P_DEV_SUPPORT" = "true" ]; then
+        REQUIREMENTS="${REQUIREMENTS} ${PYTHON}"
+    fi
+
+    if [ "$G_DEV_SUPPORT" = "true" ]; then
+        REQUIREMENTS="${REQUIREMENTS} ${GOLANG}"
+    fi
+
+    if [ "$WM_SUPPORT" = "true" ]; then
+        REQUIREMENTS="${REQUIREMENTS} guake gcin"
+    fi
+
+    if [ "$K8S_SUPPORT" = "true" ]; then
+        # TODO
+        echo "K8S_SUPPORT   = ${K8S_SUPPORT}"
+    fi
+
+    if [ "$MOSH_SUPPORT" = "true" ]; then
+        REQUIREMENTS="${REQUIREMENTS} mosh"
+    fi
+
+    sudo $PKG_DB_UPDATE
+    sudo $PKG_INSTALL $REQUIREMENTS
+}
+
+install_requirements_from_non_package_management_system() {
+    if [ "$DISTRIBUTION" = "arch" ] || [ "$DISTRIBUTION" = "manjaro" ]; then
+        # yay installation
+        git clone https://aur.archlinux.org/yay.git /tmp/yay-install
+        (cd /tmp/yay-install/yay && makepkg -si)
+        rm -rf /tmp/yay-install
+
+        # tabview installation
+        yay -S tabview
+    fi
+
+    if [ "$G_DEV_SUPPORT" = "true" ]; then
+        go get -u golang.org/x/lint/golint
+        sudo ln -sf $(go list -f {{.Target}} golang.org/x/lint/golint) /bin/golint
     fi
 }
 
-
-install_and_set_vim() {
-    ln -fs `pwd`/vim/vimrc ~/.vimrc
-    ln -fs `pwd`/vim/ycm_extra_conf.py ~/.ycm_extra_conf.py
-
-    git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
-    vim +PluginInstall +qall
-    ~/.vim/bundle/YouCompleteMe/install.py --clang-completer
-    ~/.vim/bundle/YouCompleteMe/install.py --go-completer
-}
-
-
 install_and_set_ohmyzsh() {
+    # TODO: survey zsh + zplug (https://www.jkg.tw/p2965/)
+
     # "https://git.io/vhqYi" is the shorten URL of oh-my-zsh installation script
     # which allows batch mode and is updated in pull requests #5893, link is as
     # below:
@@ -46,41 +135,54 @@ install_and_set_ohmyzsh() {
         exit 1
     }
 
-    ln -fs `pwd`/zsh/zshrc ~/.zshrc
+    cp `pwd`/zsh/zshrc ~/.zshrc
     ln -fs `pwd`/zsh/mytheme.zsh-theme ~/.oh-my-zsh/themes/mytheme.zsh-theme
+
+    if [ "$G_DEV_SUPPORT" = "true" ]; then
+        echo "export GOPATH=~/.golang" >> ~/zsh/zshrc
+    fi
+
+    if [ "$K8S_SUPPORT" = "true" ]; then
+        echo "source <(kubectl completion zsh)" >> ~/zsh/zshrc
+    fi
 }
 
 
 install_and_set_tmux() {
-    rm -f ~/.tmux.conf
-    cp tmux/tmux.conf ~/.tmux.conf
+    ln -fs `pwd`/tmux/tmux.conf ~/.tmux.conf
 }
 
 
 install_and_set_git() {
-    ln -fs `pwd`/git/gitconfig ~/.gitconfig
+    cp `pwd`/git/gitconfig ~/.gitconfig
 }
 
 
-install_daily_tools() {
-    if [ "$DISTRIBUTION" = "elementary" ] || [ "$DISTRIBUTION" = "ubuntu" ]; then
-        go get -u golang.org/x/lint/golint
-        sudo ln -sf $(go list -f {{.Target}} golang.org/x/lint/golint) /bin/golint
-    else # including arch & manjaro
-        yay -S tabview
+install_and_set_vim() {
+    ln -fs `pwd`/vim/vimrc ~/.vimrc
+    ln -fs `pwd`/vim/ycm_extra_conf.py ~/.ycm_extra_conf.py
+
+    git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+    vim +PluginInstall +qall
+
+    if [ "$C_DEV_SUPPORT" = "true" ]; then
+        ~/.vim/bundle/YouCompleteMe/install.py --clang-completer
+    fi
+
+    if [ "$G_DEV_SUPPORT" = "true" ]; then
+        ~/.vim/bundle/YouCompleteMe/install.py --go-completer
+        vim +GoInstallBinaries +qall
     fi
 }
 
 
 main() {
-    echo getting package management system ...
-    get_package_management_system
+    get_cli_arg "$@"
+    init_variables
 
     echo installing requirements ...
-    install_requirements
-
-    echo installing and setting vim ...
-    install_and_set_vim
+    install_requirements_from_package_management_system
+    install_requirements_from_non_package_management_system
 
     echo installing and setting oh-my-zsh ...
     install_and_set_ohmyzsh
@@ -91,8 +193,8 @@ main() {
     echo installing and setting gitconfig ...
     install_and_set_git
 
-    echo installing daily tools
-    install_daily_tools
+    echo installing and setting vim ...
+    install_and_set_vim
 }
 
-main
+main "$@"
