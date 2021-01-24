@@ -109,7 +109,8 @@ install_requirements_from_package_management_system() {
 install_requirements_from_non_package_management_system() {
     if [ "$DISTRIBUTION" = "arch" ] || [ "$DISTRIBUTION" = "manjaro" ]; then
         # yay installation
-        git clone https://aur.archlinux.org/yay.git /tmp/yay-install
+	mkdir /tmp/yay-install
+        git clone https://aur.archlinux.org/yay.git /tmp/yay-install/yay
         (cd /tmp/yay-install/yay && makepkg -si)
         rm -rf /tmp/yay-install
 
@@ -139,11 +140,11 @@ install_and_set_ohmyzsh() {
     ln -fs `pwd`/zsh/mytheme.zsh-theme ~/.oh-my-zsh/themes/mytheme.zsh-theme
 
     if [ "$G_DEV_SUPPORT" = "true" ]; then
-        echo "export GOPATH=~/.golang" >> ~/zsh/zshrc
+        echo "export GOPATH=~/.golang" >> ~/.zshrc
     fi
 
     if [ "$K8S_SUPPORT" = "true" ]; then
-        echo "source <(kubectl completion zsh)" >> ~/zsh/zshrc
+        echo "source <(kubectl completion zsh)" >> ~/.zshrc
     fi
 }
 
@@ -160,7 +161,6 @@ install_and_set_git() {
 
 install_and_set_vim() {
     ln -fs `pwd`/vim/vimrc ~/.vimrc
-    ln -fs `pwd`/vim/ftplugin ~/.vim/ftplugin
     ln -fs `pwd`/vim/ycm_extra_conf.py ~/.ycm_extra_conf.py
 
     git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
@@ -174,6 +174,8 @@ install_and_set_vim() {
         ~/.vim/bundle/YouCompleteMe/install.py --go-completer
         vim +GoInstallBinaries +qall
     fi
+
+    ln -fs `pwd`/vim/ftplugin ~/.vim/ftplugin
 }
 
 
