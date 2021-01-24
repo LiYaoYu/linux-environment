@@ -46,16 +46,11 @@ hi ColorColumn ctermbg=232
 set cursorline
 hi CursorLine cterm=none ctermbg=234
 
-" show tab indent and trail space with colors
-set list lcs=tab:\|\ ,trail:·
-hi SpecialKey ctermfg=239
-
 " config vimdiff colors
 hi DiffAdd    cterm=bold ctermfg=black ctermbg=green
 hi DiffDelete cterm=bold ctermfg=none ctermbg=red
 hi DiffText   cterm=bold ctermfg=black ctermbg=green
 hi DiffChange ctermfg=none ctermbg=none
-
 
 " set encoding
 set encoding=utf-8
@@ -77,15 +72,6 @@ set incsearch
 set mouse=a
 set ttymouse=xterm2
 
-" settings for tabs
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set expandtab
-
-" tab settings for Makefile
-autocmd FileType make setlocal noexpandtab shiftwidth=8 tabstop=8
-
 " settings for status line
 set statusline=
 set statusline+=%2*\ %<%F\                                " File+path
@@ -97,20 +83,8 @@ hi User3 ctermfg=15  ctermbg=237
 hi User6 ctermfg=0  ctermbg=32
 set laststatus=2
 
-
 " brackets complement
 imap {<CR> {<CR>}<Esc>ko<Tab>
-
-" jump between Rg and pre Rg locations
-nmap b 'X
-nmap B 'Y
-
-" show current function name
-nmap f :call ShowFuncName()<CR>
-
-" resize windows
-nmap , <C-W><
-nmap . <C-W>>
 
 " shortcuts for navigation between splited windows
 nmap <C-J> <C-W><C-J>
@@ -120,6 +94,10 @@ nmap <C-H> <C-W><C-H>
 
 " vertical split current file
 nmap <F2> :vsplit %:p<CR>
+
+" resize windows
+nmap , <C-W><
+nmap . <C-W>>
 
 " search and replace words
 nmap <F3> "zyiw:exe " Ag ".@z.""<CR>
@@ -133,48 +111,6 @@ nmap <F7> :NERDTree<CR>
 " roll the tab
 nmap <F9> gT
 nmap <F10> gt
-
-" cscope settings
-set cscopetag
-set csto=0
-if filereadable("cscope.out")
-  cs add cscope.out
-endif
-
-" show msg when any other cscope db added
-set cscopeverbose
-
-"   's'   symbol: find all references to the token under cursor
-"   'g'   global: find global definition(s) of the token under cursor
-"   'c'   calls:  find all calls to the function name under cursor
-"   't'   text:   find all instances of the text under cursor
-"   'e'   egrep:  egrep search for the word under cursor
-"   'f'   file:   open the filename under cursor
-"   'i'   includes: find files that include the filename under cursor
-"   'd'   called: find functions that function under cursor calls
-
-" jump to target directly
-nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
-nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
-nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
-nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
-nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
-nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
-
-" jump to target with a new vertical split window
-nmap <C-\><C-\>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
-nmap <C-\><C-\>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
-nmap <C-\><C-\>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
-nmap <C-\><C-\>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
-nmap <C-\><C-\>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
-nmap <C-\><C-\>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
-nmap <C-\><C-\>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-nmap <C-\><C-\>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
-
-" update cscope automatically
-nmap <silent> <C-\>u :call AutoUpdateCscopeAndCtags()<CR>
 
 " load specific plugins based on filetype
 filetype plugin on

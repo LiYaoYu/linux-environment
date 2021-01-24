@@ -160,6 +160,7 @@ install_and_set_git() {
 
 install_and_set_vim() {
     ln -fs `pwd`/vim/vimrc ~/.vimrc
+    ln -fs `pwd`/vim/ftplugin ~/.vim/ftplugin
     ln -fs `pwd`/vim/ycm_extra_conf.py ~/.ycm_extra_conf.py
 
     git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
