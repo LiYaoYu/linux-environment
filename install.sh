@@ -9,6 +9,7 @@ show_help() {
     echo "  -p    setup the environment to support python development"
     echo "  -g    setup the environment to support golang development"
     echo "  -w    setup the environment includes the tools for windows manager"
+    echo "  -d    setup the environment for docker deployment"
     echo "  -k    setup the environment for kubernetes deployment"
     echo "  -m    setup the mosh server"
     exit 0
@@ -22,6 +23,7 @@ get_cli_arg() {
     P_DEV_SUPPORT=false
     G_DEV_SUPPORT=false
     WM_SUPPORT=false
+    DOCKER_SUPPORT=false
     K8S_SUPPORT=false
     MOSH_SUPPORT=false
 
@@ -32,19 +34,25 @@ get_cli_arg() {
             -p) P_DEV_SUPPORT=true ;;
             -g) G_DEV_SUPPORT=true ;;
             -w) WM_SUPPORT=true ;;
+            -d) DOCKER_SUPPORT=true ;;
             -k) K8S_SUPPORT=true ;;
             -m) MOSH_SUPPORT=true ;;
         esac
         shift
     done
 
-    echo "DISTRIBUTION  = ${DISTRIBUTION}"
-    echo "C_DEV_SUPPORT = ${C_DEV_SUPPORT}"
-    echo "P_DEV_SUPPORT = ${P_DEV_SUPPORT}"
-    echo "G_DEV_SUPPORT = ${G_DEV_SUPPORT}"
-    echo "WM_SUPPORT    = ${WM_SUPPORT}   "
-    echo "K8S_SUPPORT   = ${K8S_SUPPORT}  "
-    echo "MOSH_SUPPORT  = ${MOSH_SUPPORT}  "
+    if [ "$K8S_SUPPORT" = "true" ]; then
+    	DOCKER_SUPPORT=true
+    fi
+
+    echo "DISTRIBUTION   = ${DISTRIBUTION}"
+    echo "C_DEV_SUPPORT  = ${C_DEV_SUPPORT}"
+    echo "P_DEV_SUPPORT  = ${P_DEV_SUPPORT}"
+    echo "G_DEV_SUPPORT  = ${G_DEV_SUPPORT}"
+    echo "WM_SUPPORT     = ${WM_SUPPORT}"
+    echo "DOCKER_SUPPORT = ${DOCKER_SUPPORT}"
+    echo "K8S_SUPPORT    = ${K8S_SUPPORT}"
+    echo "MOSH_SUPPORT   = ${MOSH_SUPPORT}"
 }
 
 init_variables() {
@@ -93,9 +101,14 @@ install_requirements_from_package_management_system() {
         REQUIREMENTS="${REQUIREMENTS} guake gcin"
     fi
 
+    if [ "$DOCKER_SUPPORT" = "true" ]; then
+        # TODO
+        echo "DOCKER_SUPPORT = ${DOCKER_SUPPORT}"
+    fi
+
     if [ "$K8S_SUPPORT" = "true" ]; then
         # TODO
-        echo "K8S_SUPPORT   = ${K8S_SUPPORT}"
+        echo "K8S_SUPPORT = ${K8S_SUPPORT}"
     fi
 
     if [ "$MOSH_SUPPORT" = "true" ]; then
