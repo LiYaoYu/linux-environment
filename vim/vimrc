@@ -21,6 +21,9 @@ Plugin 'junegunn/fzf.vim'
 " golang environment
 Plugin 'fatih/vim-go'
 
+" python environment
+Plugin 'python-mode/python-mode'
+
 
 " load specific plugins based on filetype
 filetype plugin on
