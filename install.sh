@@ -184,8 +184,8 @@ install_and_set_vim() {
     fi
 
     if [ "$G_DEV_SUPPORT" = "true" ]; then
-        ~/.vim/bundle/YouCompleteMe/install.py --go-completer
         vim +GoInstallBinaries +qall
+        ~/.vim/bundle/YouCompleteMe/install.py --go-completer
     fi
 
     ln -fs `pwd`/vim/ftplugin ~/.vim/ftplugin
