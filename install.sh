@@ -179,13 +179,19 @@ install_and_set_vim() {
     git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
     vim +PluginInstall +qall
 
+    COMPLETER=""
+
     if [ "$C_DEV_SUPPORT" = "true" ]; then
-        ~/.vim/bundle/YouCompleteMe/install.py --clang-completer
+	COMPLETER="${COMPLETER} --clang-completer"
     fi
 
     if [ "$G_DEV_SUPPORT" = "true" ]; then
         vim +GoInstallBinaries +qall
-        ~/.vim/bundle/YouCompleteMe/install.py --go-completer
+	COMPLETER="${COMPLETER} --go-completer"
+    fi
+
+    if [ "$C_DEV_SUPPORT" = "true" ] || [ "$G_DEV_SUPPORT" = "true" ]; then
+        ~/.vim/bundle/YouCompleteMe/install.py $COMPLETER
     fi
 
     ln -fs `pwd`/vim/ftplugin ~/.vim/ftplugin
