@@ -60,6 +60,12 @@ init_variables() {
         PKG_INSTALL="apt install"
         PKG_DB_UPDATE="apt update"
     elif [ "$DISTRIBUTION" = "arch" ] || [ "$DISTRIBUTION" = "manjaro" ]; then
+        if [ "$DOCKER_SUPPORT" = "true" ] || [ "$K8S_SUPPORT" = "true" ]; then
+            DOCKER_SUPPORT=false
+            K8S_SUPPORT=false
+	    echo "For non-debian like OS, docker/kubernetes auto-installs are not supported currently"
+	fi
+
         PKG_INSTALL="pacman -S"
         PKG_DB_UPDATE="pacman -Syy"
     else
@@ -102,13 +108,11 @@ install_requirements_from_package_management_system() {
     fi
 
     if [ "$DOCKER_SUPPORT" = "true" ]; then
-        # TODO
-        echo "DOCKER_SUPPORT = ${DOCKER_SUPPORT}"
+        `pwd`/docker/docker-install.sh
     fi
 
     if [ "$K8S_SUPPORT" = "true" ]; then
-        # TODO
-        echo "K8S_SUPPORT = ${K8S_SUPPORT}"
+        `pwd`/kubernetes/kubernetes-install.sh
     fi
 
     if [ "$MOSH_SUPPORT" = "true" ]; then
